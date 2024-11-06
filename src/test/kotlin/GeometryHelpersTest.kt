@@ -22,6 +22,13 @@ class GeometryHelpersTest {
         assert(rotatedVector.distanceTo(targetVector) < 1e-15) // math imprecision
     }
     @Test
+    fun poseDistanceTo() {
+        val pose1 = Pose2d(0.0, 0.0, 0.0)
+        val pose2 = Pose2d(5.0, 0.0, 0.0)
+
+        assertEquals(pose1.distanceTo(pose2), 5.0)
+    }
+    @Test
     fun poseRotateBy() {
         val startPose = Pose2d(5.0,0.0,0.0)
         val rotationAmount = Math.toRadians(90.0)
