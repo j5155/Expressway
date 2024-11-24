@@ -39,7 +39,7 @@ abstract class InitLoopAction : Action {
  * Like InitLoopAction, but with the end condition seperated out
  * @param condition stops action when condition is *true* (opposite of a standard Action)
  */
-abstract class InitLoopCondAction protected constructor(var condition: () -> Boolean) : Action {
+abstract class InitLoopCondAction protected constructor(val condition: () -> Boolean) : Action {
     /**
      * Initializes the action.
      * This will always run before [loop].
