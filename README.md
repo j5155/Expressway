@@ -16,7 +16,7 @@ Ensure that the following blocks are present in the "repositories" block of your
 
 Add the following line to the "dependencies" block of that same build.gradle:
 ```groovy
-implementation "page.j5155.roadrunner:actionadditions:0.0.1"
+implementation "page.j5155.roadrunner:actionadditions:0.0.2"
 ```
 
 ## Examples
