@@ -34,10 +34,10 @@ abstract class InitLoopAction : Action {
 }
 
 /**
- * Allows for the creation of an Action using init and loop methods and a condition.
+ * Allows for the creation of an Action using init and loop methods and a boolean-returning end condition.
  * @param condition stops action when condition is true
  */
-abstract class ActionEx protected constructor(var condition: () -> Boolean) : Action {
+abstract class InitLoopCondAction protected constructor(var condition: () -> Boolean) : Action {
     /**
      * Initializes the action.
      * This will always run before [loop].
