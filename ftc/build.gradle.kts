@@ -1,6 +1,7 @@
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
+    `maven-publish`
 }
 
 repositories {
@@ -38,5 +39,43 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+    }
+
+    publishing {
+        multipleVariants {
+            withSourcesJar()
+            withJavadocJar()
+            allVariants()
+        }
+    }
+}
+afterEvaluate {
+    publishing {
+        repositories {
+            maven {
+                name = "dairyReleases"
+                url = uri("https://repo.dairy.foundation/releases")
+                credentials(PasswordCredentials::class)
+                authentication {
+                    create<BasicAuthentication>("basic")
+                }
+            }
+            maven {
+                name = "dairySnapshots"
+                url = uri("https://repo.dairy.foundation/snapshots")
+                credentials(PasswordCredentials::class)
+                authentication {
+                    create<BasicAuthentication>("basic")
+                }
+            }
+        }
+        publications {
+            create<MavenPublication>("maven") {
+                groupId = "page.j5155.roadrunner.actionadditions"
+                artifactId = "ftc"
+                version = "0.0.1"
+                from(components["release"])
+            }
+        }
     }
 }
