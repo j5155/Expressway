@@ -13,13 +13,14 @@ abstract class InitLoopAction : Action {
     private var initialized = false
 
     /**
-     * Run exactly once the first time the action is run.
+     * Initializes the action.
+     * This will always run before [loop].
      */
     abstract fun init()
 
     /**
-     * Run every loop. Init is guaranteed to have been run once before this.
-     * @return whether to continue with the action; true to continue looping, false to end
+     * Contents of the action.
+     * @return whether to continue with the action; true to continue looping, false to end (like a standard Action)
      */
     abstract fun loop(t: TelemetryPacket): Boolean
 
@@ -47,7 +48,7 @@ abstract class InitLoopCondAction protected constructor(var condition: () -> Boo
 
     /**
      * Contents of the action.
-     * This will repeat until [condition] is true.
+     * This will repeat *until* [condition] is true (opposite of a standard Action).
      */
     abstract fun loop(p: TelemetryPacket)
 
@@ -64,9 +65,9 @@ abstract class InitLoopCondAction protected constructor(var condition: () -> Boo
 }
 
 /**
- * Takes any number of actions as input and runs them all in parallel
+ * Takes any number of actions as input and runs them all in parallel; force-stops them all as soon as one ends
  *
- * Force-stops them all as soon as one ends
+ * Useful for running PID update actions in parallel with trajectories
  * @param actions actions to run in parallel
  */
 open class RaceParallelAction(vararg val actions: Action) : Action {
@@ -113,10 +114,6 @@ class TimeoutAction(val action: Action, val timeout: Double = 5.0) : Action by a
  * @param trueAction action to run if [determinant] is true
  * @param falseAction action to run if [determinant] is false
  * @param determinant condition that determines which action will be run
- *
- * @author j5155 - original author
- * @author Zach.Waffle - revisions
-
  */
 class ConditionalAction(val trueAction: Action, val falseAction: Action, val determinant: () -> Boolean) :
     InitLoopAction() {
