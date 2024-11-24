@@ -6,6 +6,33 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.now
 
+// Released under the MIT License and the BSD-3-Clause license by contributors (you may use it under either one)
+// Contributors: j5155, rowan1771
+
+abstract class InitLoopAction : Action {
+    private var initialized = false
+
+    /**
+     * Run exactly once the first time the action is run.
+     */
+    abstract fun init()
+
+    /**
+     * Run every loop. Init is guaranteed to have been run once before this.
+     * @return whether to continue with the action; true to continue looping, false to end
+     */
+    abstract fun loop(t: TelemetryPacket): Boolean
+
+    final override fun run(t: TelemetryPacket): Boolean { // final to prevent downstream classes from overriding it
+        if (!initialized) {
+            init()
+            initialized = true
+        }
+        return loop(t)
+    }
+    // intentionally not overriding preview
+}
+
 /**
  * Allows for the creation of an Action using init and loop methods and a condition.
  * @param condition stops action when condition is true
@@ -34,8 +61,6 @@ abstract class ActionEx protected constructor(var condition: () -> Boolean) : Ac
         return !condition.invoke()
     }
 }
-
-// Released under the MIT License and the BSD-3-Clause license by j5155 (you may use it under either one)
 
 /**
  * Takes any number of actions as input and runs them all in parallel
