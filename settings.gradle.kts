@@ -11,4 +11,4 @@ plugins {
 rootProject.name = "ActionAdditions"
 
 include(":core")
-include(":actionadditions:ftc")
+include(":ftc")
