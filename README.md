@@ -21,4 +21,4 @@ implementation "page.j5155.roadrunner:actionadditions:0.0.1"
 
 ## Examples
 
-Example repo coming soon (maybe); for now, see [the examples page](examples.md)
+Example module coming soon (maybe); for now, see [the examples page](examples.md)
