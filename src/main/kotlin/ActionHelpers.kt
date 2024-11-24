@@ -7,7 +7,7 @@ import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.now
 
 // Released under the MIT License and the BSD-3-Clause license by contributors (you may use it under either one)
-// Contributors: j5155, rowan1771
+// Contributors: j5155, Zach.Waffle
 
 abstract class InitLoopAction : Action {
     private var initialized = false
@@ -119,24 +119,19 @@ class TimeoutAction(val action: Action, val timeout: Double = 5.0) : Action by a
 
  */
 class ConditionalAction(val trueAction: Action, val falseAction: Action, val determinant: () -> Boolean) :
-    Action {
+    InitLoopAction() {
     private lateinit var chosenAction: Action
-    private var initialized = false
 
-    private fun init() {
+    override fun init() {
         chosenAction =
-            if (determinant.invoke()) { // use .get() to check the value of the condition by running the input function
+            if (determinant.invoke()) { // use .invoke() to check the value of the condition by running the input function
                 trueAction // and then save the decision to the chosenAction variable
             } else {
                 falseAction
             }
     }
 
-    override fun run(p: TelemetryPacket): Boolean {
-        if (!initialized) {
-            init()
-            initialized = true
-        }
+    override fun loop(p: TelemetryPacket): Boolean {
         return chosenAction.run(p)
     }
 
