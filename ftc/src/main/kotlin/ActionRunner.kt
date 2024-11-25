@@ -13,7 +13,11 @@ open class ActionRunner {
      * Adds [action] to the list of running actions.
      */
     open fun runAsync(action: Action) {
-        runningActions.add(action)
+        try {
+            runningActions.add(action)
+        } catch (_: ConcurrentModificationException) {
+            throw RuntimeException("An action attempted to queue another action with runAsync. Actions should instead wrap other actions to begin running them.")
+        }
     }
 
     /**
