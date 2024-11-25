@@ -3,15 +3,15 @@ import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 
-class ActionRunner {
+open class ActionRunner {
     var runningActions = mutableListOf<Action>()
     private val dash = FtcDashboard.getInstance()
 
-    fun runAsync(action: Action) {
+    open fun runAsync(action: Action) {
         runningActions.add(action)
     }
 
-    fun updateAsync(packet: TelemetryPacket = DefaultPacket()) {
+    open fun updateAsync(packet: TelemetryPacket = DefaultPacket()) {
         val newActions = ArrayList<Action>()
         for (action in runningActions) {
             action.preview(packet.fieldOverlay())
