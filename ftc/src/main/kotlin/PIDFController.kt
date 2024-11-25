@@ -8,7 +8,7 @@ import kotlin.math.withSign
 /**
  * PID controller with various feedforward components.
  * Originally from Roadrunner 0.5
- * Ported to Kotlin by Zach.Waffle and j5
+ * Ported to Kotlin by Zach.Waffle and j5155
  */
 class PIDFController
 /**
