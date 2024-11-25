@@ -12,3 +12,4 @@ rootProject.name = "ActionAdditions"
 
 include(":core")
 include(":ftc")
+include(":examples")
