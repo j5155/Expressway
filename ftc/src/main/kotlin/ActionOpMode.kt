@@ -1,6 +1,5 @@
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
 import com.qualcomm.robotcore.eventloop.opmode.OpMode
 
 abstract class ActionOpMode(val runner: ActionRunner = ActionRunner()) : OpMode() {
