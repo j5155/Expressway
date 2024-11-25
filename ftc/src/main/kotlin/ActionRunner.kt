@@ -4,22 +4,31 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 
 class ActionRunner {
-    private val runningActions = mutableListOf<Action>()
+    var runningActions = mutableListOf<Action>()
     private val dash = FtcDashboard.getInstance()
-    private val canvas = Canvas()
 
     fun runAsync(action: Action) {
         runningActions.add(action)
     }
 
-    fun updateAsync() {
-        val packet = TelemetryPacket()
-        packet.fieldOverlay().operations.addAll(canvas.operations)
-        val iter: MutableIterator<Action> = runningActions.iterator()
-        while (iter.hasNext() && !Thread.currentThread().isInterrupted) {
-            val action: Action = iter.next()
-            if (!action.run(packet)) iter.remove()
+    fun updateAsync(packet: TelemetryPacket = DefaultPacket()) {
+        val newActions = ArrayList<Action>()
+        for (action in runningActions) {
+            action.preview(packet.fieldOverlay())
+            if (action.run(packet)) {
+                newActions.add(action)
+            }
         }
-        dash.sendTelemetryPacket(packet)
+        runningActions = newActions
+
+        // if no packet was specified, we have to create and send one ourselves
+        // this feels kinda jank tbh
+        if (packet is DefaultPacket) {
+            dash.sendTelemetryPacket(packet)
+        }
     }
+
+
+    // used to differentiate whether we just made the packet or whether it was just passed
+    private class DefaultPacket(drawDefaultField: Boolean = true) : TelemetryPacket(drawDefaultField)
 }
