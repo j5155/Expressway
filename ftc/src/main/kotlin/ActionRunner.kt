@@ -5,8 +5,8 @@ import com.acmerobotics.roadrunner.Action
 
 class ActionRunner {
     private val runningActions = mutableListOf<Action>()
-    private val dash: FtcDashboard by lazy { FtcDashboard.getInstance() }
-    private val canvas: Canvas by lazy { Canvas() }
+    private val dash = FtcDashboard.getInstance()
+    private val canvas = Canvas()
 
     fun runAsync(action: Action) {
         runningActions.add(action)
