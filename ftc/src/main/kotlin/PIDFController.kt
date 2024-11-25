@@ -89,6 +89,10 @@ class PIDFController
             maxOutput = max
     }
 
+    fun setTargetPosition(position: Int) {
+        targetPosition = position
+    }
+
     fun getPositionError(measuredPosition: Double): Double {
         var error = targetPosition - measuredPosition
         if (inputBounded) {
@@ -149,6 +153,12 @@ class PIDFController
         return output
     }
 
+    fun update(
+        measuredPosition: Double
+    ): Double {
+        return update(measuredPosition=measuredPosition)
+    }
+
     @JvmOverloads
     fun updateSquid( // TODO this should be it's own class (extending this one)
         timestamp: Long = System.nanoTime(),
@@ -160,6 +170,11 @@ class PIDFController
         return sqrt(abs(result)) * sign(result)
     }
 
+    fun updateSquid(
+        measuredPosition: Double
+    ): Double {
+        return updateSquid(measuredPosition=measuredPosition)
+    }
 
     /**
      * Reset the controller's integral sum.
