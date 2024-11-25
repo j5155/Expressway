@@ -5,10 +5,6 @@ import com.acmerobotics.roadrunner.Action
 /**
  * ActionRunner allows for running actions asynchronously during an OpMode.
  */
-class ActionRunner {
-    private val runningActions = mutableListOf<Action>()
-    private val dash: FtcDashboard by lazy { FtcDashboard.getInstance() }
-    private val canvas: Canvas by lazy { Canvas() }
 open class ActionRunner {
     var runningActions = mutableListOf<Action>()
     private val dash = FtcDashboard.getInstance()
@@ -47,26 +43,4 @@ open class ActionRunner {
 
     // used to differentiate whether we just made the packet or whether it was just passed
     private class DefaultPacket(drawDefaultField: Boolean = true) : TelemetryPacket(drawDefaultField)
-
-    companion object {
-        /**
-         * Runs [action] until it returns false.
-         * Equivalent to calling `Actions.runBlocking(action)`.
-         */
-        @JvmStatic
-        fun runBlocking(action: Action) {
-            val canvas = Canvas()
-            action.preview(canvas)
-
-            var actionStillRunning = true
-            while (actionStillRunning && !Thread.currentThread().isInterrupted) {
-                val packet = TelemetryPacket()
-                packet.fieldOverlay().operations.addAll(canvas.operations)
-
-                actionStillRunning = action.run(packet)
-
-                FtcDashboard.getInstance().sendTelemetryPacket(packet)
-            }
-        }
-    }
 }
