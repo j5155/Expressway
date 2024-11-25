@@ -76,7 +76,7 @@ afterEvaluate {
             create<MavenPublication>("maven") {
                 groupId = "page.j5155.roadrunner.actionadditions"
                 artifactId = "ftc"
-                version = "0.0.1"
+                version = "0.0.2"
                 from(components["release"])
             }
         }
