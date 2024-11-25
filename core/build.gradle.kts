@@ -46,7 +46,7 @@ publishing {
     publications {
         create<MavenPublication>("maven") {
             groupId = "page.j5155.roadrunner"
-            artifactId = "actionadditions"
+            artifactId = "expressway"
             version = "0.0.2"
             from(components["java"])
         }

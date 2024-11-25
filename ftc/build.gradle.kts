@@ -12,7 +12,10 @@ repositories {
 
 dependencies {
     implementation("com.android.support:appcompat-v7:28.0.0")
+
     implementation("org.firstinspires.ftc:RobotCore:10.1.1")
+    implementation("org.firstinspires.ftc:Hardware:10.1.1")
+
     implementation("com.acmerobotics.dashboard:dashboard:0.4.16") {
         exclude(group="org.firstinspires.ftc")
     }
@@ -71,9 +74,9 @@ afterEvaluate {
         }
         publications {
             create<MavenPublication>("maven") {
-                groupId = "page.j5155.roadrunner.actionadditions"
+                groupId = "page.j5155.roadrunner.expressway"
                 artifactId = "ftc"
-                version = "0.0.1"
+                version = "0.0.2"
                 from(components["release"])
             }
         }
