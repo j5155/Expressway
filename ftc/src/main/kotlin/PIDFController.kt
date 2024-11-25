@@ -7,6 +7,8 @@ import kotlin.math.withSign
 
 /**
  * PID controller with various feedforward components.
+ * Originally from Roadrunner 0.5
+ * Ported to Kotlin by Zach.Waffle and j5155
  */
 class PIDFController
 /**
@@ -68,11 +70,10 @@ class PIDFController
      * @param max maximum input
      */
     fun setInputBounds(min: Double, max: Double) {
-        if (min < max) {
+        assert(min < max) { "Min output must be less than max output!" }
             inputBounded = true
             minInput = min
             maxInput = max
-        }
     }
 
     /**
@@ -82,15 +83,10 @@ class PIDFController
      * @param max maximum output
      */
     fun setOutputBounds(min: Double, max: Double) {
-        if (min < max) {
+        assert(min < max) { "Min output must be less than max output!" }
             outputBounded = true
             minOutput = min
             maxOutput = max
-        }
-    }
-
-    fun setTargetPosition(position: Int) {
-        targetPosition = position
     }
 
     fun getPositionError(measuredPosition: Double): Double {
@@ -113,7 +109,7 @@ class PIDFController
      */
     @JvmOverloads
     fun update(
-        timestamp: Long,
+        timestamp: Long = System.nanoTime(),
         measuredPosition: Double,
         measuredVelocity: Double? = null
     ): Double {
@@ -153,15 +149,9 @@ class PIDFController
         return output
     }
 
-    fun update(
-        measuredPosition: Double
-    ): Double {
-        return update(System.nanoTime(), measuredPosition, null)
-    }
-
     @JvmOverloads
-    fun updateSquid(
-        timestamp: Long,
+    fun updateSquid( // TODO this should be it's own class (extending this one)
+        timestamp: Long = System.nanoTime(),
         measuredPosition: Double,
         measuredVelocity: Double? = null
     ): Double {
@@ -170,11 +160,6 @@ class PIDFController
         return sqrt(abs(result)) * sign(result)
     }
 
-    fun updateSquid(
-        measuredPosition: Double
-    ): Double {
-        return updateSquid(System.nanoTime(), measuredPosition)
-    }
 
     /**
      * Reset the controller's integral sum.
@@ -189,13 +174,5 @@ class PIDFController
         fun compute(position: Double, velocity: Double?): Double
     }
 
-    class PIDCoefficients(var kP: Double, var kI: Double, var kD: Double) {
-        override fun toString(): String {
-            return "PIDCoefficients{" +
-                    "kP=" + kP +
-                    ", kI=" + kI +
-                    ", kD=" + kD +
-                    '}'
-        }
-    }
+    data class PIDCoefficients(var kP: Double, var kI: Double, var kD: Double) // TODO do these need to be vars?
 }
