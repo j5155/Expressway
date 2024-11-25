@@ -1,24 +1,22 @@
 # Welcome to ActionAdditions!
 
-This library provides additions to the RoadRunner actions library. 
+This library provides additions to the RoadRunner actions and geometry libraries as well as helpers for SDK conversions.
 
 ## Installation
 
-Ensure that the following blocks are present in the "repositories" block of your TeamCode module build.gradle:
+Ensure that this block is present in the "repositories" block of your TeamCode module build.gradle:
 ```groovy
     maven {
         url = 'https://repo.dairy.foundation/releases'
     }
-    maven {
-        url = "https://repo.dairy.foundation/snapshots"
-    }
 ```
 
-Add the following line to the "dependencies" block of that same build.gradle:
+Add the following lines to the "dependencies" block of that same build.gradle:
 ```groovy
-implementation "page.j5155.roadrunner:actionadditions:0.0.2"
+implementation "page.j5155.roadrunner:actionadditions:0.1.0"
+implementation "page.j5155.roadrunner.actionadditions:ftc:0.1.0"
 ```
 
 ## Examples
 
-Example module coming soon (maybe); for now, see [the examples page](examples.md)
+See the examples folder for usage.
