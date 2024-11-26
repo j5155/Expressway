@@ -16,7 +16,7 @@ class PIDFAction(private val motor: DcMotor, target: Int,coefficients: PIDFContr
 
     override fun run(p: TelemetryPacket): Boolean {
         if (!initialized) {
-            pidf.setTargetPosition(target)
+            pidf.targetPosition = target
             initialized = true
         }
 
@@ -50,7 +50,7 @@ class PIDFActionEx(
 
 
     override fun init() {
-        pidf.setTargetPosition(target)
+        pidf.targetPosition = target
     }
 
     override fun loop(p: TelemetryPacket) {

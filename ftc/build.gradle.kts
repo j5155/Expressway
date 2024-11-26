@@ -12,6 +12,7 @@ repositories {
 
 dependencies {
     implementation("com.android.support:appcompat-v7:28.0.0")
+    implementation(project(":core"))
 
     compileOnly("org.firstinspires.ftc:RobotCore:10.1.1")
     compileOnly("org.firstinspires.ftc:Hardware:10.1.1")

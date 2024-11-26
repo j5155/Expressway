@@ -17,5 +17,6 @@
       <option name="processLiterals" value="true" />
       <option name="processComments" value="true" />
     </inspection_tool>
+    <inspection_tool class="UnusedSymbol" enabled="true" level="TEXT ATTRIBUTES" enabled_by_default="true" />
   </profile>
 </component>

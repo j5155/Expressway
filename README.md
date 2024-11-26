@@ -1,10 +1,10 @@
-# Welcome to ActionAdditions!
+# Welcome to Expressway!
 
-This library provides additions to the RoadRunner actions and geometry libraries as well as helpers for SDK conversions.
+This library provides additions to the RoadRunner actions and geometry libraries as well as an ActionRunner system for OpMode usage, and helpers for SDK conversions.
 
 ## Installation
 
-Ensure that this block is present in the "repositories" block of your TeamCode module build.gradle:
+Ensure this block is in the "repositories" block of your TeamCode module build.gradle:
 ```groovy
     maven {
         url = 'https://repo.dairy.foundation/releases'
