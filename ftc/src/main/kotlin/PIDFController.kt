@@ -1,8 +1,6 @@
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
-import kotlin.math.sign
-import kotlin.math.sqrt
 import kotlin.math.withSign
 
 /**
@@ -10,7 +8,7 @@ import kotlin.math.withSign
  * Originally from Roadrunner 0.5
  * Ported to Kotlin by Zach.Waffle and j5155
  */
-class PIDFController
+open class PIDFController
 /**
  * Feedforward parameters `kV`, `kA`, and `kStatic` correspond with a basic
  * kinematic model of DC motors. The general function `kF` computes a custom feedforward
@@ -28,6 +26,10 @@ class PIDFController
     private val kStatic: Double = 0.0,
     private val kF: FeedforwardFun = FeedforwardFun { x: Double, v: Double? -> 0.0 }
 ) {
+    constructor(
+        pid: PIDCoefficients,
+        kF: FeedforwardFun
+    ) : this(pid, 0.0, 0.0, 0.0, kF)
     /**
      * Target position (that is, the controller setpoint).
      */
@@ -56,10 +58,7 @@ class PIDFController
     private var minOutput = 0.0
     private var maxOutput = 0.0
 
-    constructor(
-        pid: PIDCoefficients,
-        kF: FeedforwardFun
-    ) : this(pid, 0.0, 0.0, 0.0, kF)
+
 
     /**
      * Sets bound on the input of the controller. When computing the error, the min and max are
@@ -156,22 +155,7 @@ class PIDFController
         return update(measuredPosition=measuredPosition)
     }
 
-    @JvmOverloads
-    fun updateSquid( // TODO this should be it's own class (extending this one)
-        timestamp: Long,
-        measuredPosition: Double,
-        measuredVelocity: Double? = null
-    ): Double {
-        val result = update(timestamp, measuredPosition, measuredVelocity)
 
-        return sqrt(abs(result)) * sign(result)
-    }
-
-    fun updateSquid(
-        measuredPosition: Double
-    ): Double {
-        return updateSquid(measuredPosition=measuredPosition)
-    }
 
     /**
      * Reset the controller's integral sum.
