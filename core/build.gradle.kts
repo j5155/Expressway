@@ -14,6 +14,10 @@ repositories {
 
 dependencies {
     implementation("com.acmerobotics.roadrunner:actions:1.0.0")
+    implementation("com.acmerobotics.dashboard:dashboard:0.4.16") {
+        exclude(group = "org.firstinspires.ftc")
+    }
+
     testImplementation(kotlin("test"))
 }
 

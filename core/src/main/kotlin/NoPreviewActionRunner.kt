@@ -3,6 +3,7 @@ import com.acmerobotics.roadrunner.Action
 
 /**
  * ActionRunner allows for running actions asynchronously during an OpMode.
+ * This version has no preview, allowing it to be used without depending on FTC Dashboard
  */
 open class NoPreviewActionRunner(val sendTelemetryPacket: (TelemetryPacket) -> Unit = {}) {
     var runningActions = mutableListOf<Action>()
