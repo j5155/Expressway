@@ -4,17 +4,15 @@ import com.acmerobotics.roadrunner.InstantAction
 import com.qualcomm.robotcore.hardware.DcMotor
 import page.j5155.actionAdditions.InitLoopCondAction
 
-class PIDFAction(private val motor: DcMotor, target: Int,coefficients: PIDFController.PIDCoefficients) :
-    Action {
+class PIDFAction(private val motor: DcMotor, target: Int,coefficients: PIDFController.PIDCoefficients) : Action {
     private var initialized = false
 
     val pidf = PIDFController(coefficients)
-    private var target by pidf::targetPosition
-
-    init {
-        this.target = target
-    }
-
+    var target = target
+        set(value) {
+            pidf.targetPosition = value
+            field = value
+        }
 
     override fun run(p: TelemetryPacket): Boolean {
         if (!initialized) {
@@ -35,16 +33,20 @@ class PIDFAction(private val motor: DcMotor, target: Int,coefficients: PIDFContr
     fun update(target: Int) : Action = InstantAction { this.target = target }
 }
 
+fun hasArrived(motor: DcMotor, target: Int) : () -> Boolean {
+    return { motor.currentPosition in (target - 50)..(target + 50) }
+}
+
 class PIDFActionEx(
     private val motor: DcMotor, target: Int, coefficients: PIDFController.PIDCoefficients,
-) : InitLoopCondAction({ motor.currentPosition in (target - 50)..(target + 50)} )  {
+) : InitLoopCondAction(hasArrived(motor, target))  {
 
     private val pidf = PIDFController(coefficients)
-    private var target by pidf::targetPosition
-
-    init {
-        this.target = target
-    }
+    private var target = target
+        set(value) {
+            pidf.targetPosition = value
+            field = value
+        }
 
 
     override fun init() {
