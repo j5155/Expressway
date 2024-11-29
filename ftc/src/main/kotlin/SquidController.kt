@@ -28,20 +28,13 @@ class SquidController: PIDFController {
             kF: FeedforwardFun
     ) : this(pid, 0.0, 0.0, 0.0, kF)
 
-    @JvmOverloads
-    fun updateSquid(
+    override fun update(
         timestamp: Long,
         measuredPosition: Double,
-        measuredVelocity: Double? = null
+        measuredVelocity: Double?
     ): Double {
         val result = update(timestamp, measuredPosition, measuredVelocity)
 
         return sqrt(abs(result)) * sign(result)
-    }
-
-    fun updateSquid(
-        measuredPosition: Double
-    ): Double {
-        return updateSquid(measuredPosition = measuredPosition)
     }
 }
