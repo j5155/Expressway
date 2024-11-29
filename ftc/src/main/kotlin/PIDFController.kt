@@ -108,7 +108,7 @@ open class PIDFController
      * @param measuredVelocity measured velocity
      */
     @JvmOverloads
-    fun update(
+    open fun update(
         timestamp: Long,
         measuredPosition: Double,
         measuredVelocity: Double? = null
