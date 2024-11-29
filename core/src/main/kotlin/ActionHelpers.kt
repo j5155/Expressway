@@ -34,12 +34,16 @@ abstract class InitLoopAction : Action {
     // intentionally not overriding preview
 }
 
+fun interface Condition {
+    operator fun invoke(): Boolean
+}
+
 /**
  * Allows for the creation of an Action using init and loop methods and a boolean-returning end condition.
  * Like InitLoopAction, but with the end condition seperated out
  * @param condition stops action when condition is *true* (opposite of a standard Action)
  */
-abstract class InitLoopCondAction protected constructor(val condition: () -> Boolean) : Action {
+abstract class InitLoopCondAction protected constructor(val condition: Condition) : Action {
     /**
      * Initializes the action.
      * This will always run before [loop].
@@ -54,13 +58,16 @@ abstract class InitLoopCondAction protected constructor(val condition: () -> Boo
 
     private var hasInit = false
 
+    val isRunning: Boolean
+        get() = condition()
+
     final override fun run(p: TelemetryPacket): Boolean {
         if (!hasInit) {
             init()
             hasInit = true
         }
         loop(p)
-        return !condition.invoke()
+        return !condition()
     }
 }
 
@@ -121,7 +128,7 @@ class ConditionalAction(val trueAction: Action, val falseAction: Action, val det
 
     override fun init() {
         chosenAction =
-            if (determinant.invoke()) { // use .invoke() to check the value of the condition by running the input function
+            if (determinant()) { // call determinant to check the value of the condition by running the input function
                 trueAction // and then save the decision to the chosenAction variable
             } else {
                 falseAction

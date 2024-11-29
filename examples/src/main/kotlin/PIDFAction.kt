@@ -2,7 +2,7 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.InstantAction
 import com.qualcomm.robotcore.hardware.DcMotor
-import page.j5155.actionAdditions.InitLoopCondAction
+import page.j5155.expressway.actions.InitLoopCondAction
 
 class PIDFAction(private val motor: DcMotor, target: Int,coefficients: PIDFController.PIDCoefficients) : Action {
     private var initialized = false
