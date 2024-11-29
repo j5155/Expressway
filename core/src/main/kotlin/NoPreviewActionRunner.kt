@@ -25,7 +25,7 @@ open class NoPreviewActionRunner(val sendTelemetryPacket: (TelemetryPacket) -> U
      * Runs each action that was added using [runAsync] in the order that they were called to [runAsync].
      * Should be called exactly once per loop.
      */
-
+    @JvmOverloads
     open fun updateAsync(packet: TelemetryPacket = DefaultPacket()) {
         val newActions = ArrayList<Action>()
 

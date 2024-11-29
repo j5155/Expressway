@@ -33,8 +33,8 @@ class PIDFAction(private val motor: DcMotor, target: Int,coefficients: PIDFContr
     fun update(target: Int) : Action = InstantAction { this.target = target }
 }
 
-fun hasArrived(motor: DcMotor, target: Int) : () -> Boolean {
-    return { motor.currentPosition in (target - 50)..(target + 50) }
+fun hasArrived(motor: DcMotor, target: Int, tolerance: Int = 50) : () -> Boolean {
+    return { motor.currentPosition in (target - tolerance)..(target + tolerance) }
 }
 
 class PIDFActionEx(
