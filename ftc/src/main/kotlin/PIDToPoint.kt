@@ -9,7 +9,7 @@ import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.math.PI
 
-class PIDToPoint(
+class PIDToPoint (
     private val pose: Supplier<Pose2d>,
     private val vel: Supplier<Vector2d>,
     private val target: Pose2d,
@@ -23,7 +23,7 @@ class PIDToPoint(
     private val yController = SquidController(lateralCoefs)
     private val headingController = SquidController(headingCoefs)
 
-    override fun init() {
+    init {
         xController.targetPosition = target.position.x.toInt()
         yController.targetPosition = target.position.y.toInt()
 
@@ -35,11 +35,6 @@ class PIDToPoint(
         val vel = vel.get()
         val pose = pose.get()
 
-        if (!isRunning) {
-            powerUpdater.accept(PoseVelocity2d(Vector2d(0.0, 0.0), 0.0))
-            return
-        }
-
         var inputVector =
             Vector2d(xController.update(pose.position.x), yController.update(pose.position.y))
         inputVector *= pose.heading.inverse()
@@ -48,5 +43,9 @@ class PIDToPoint(
             PoseVelocity2d(inputVector, headingController.update(pose.heading.toDouble()))
 
         powerUpdater.accept(inputVels)
+    }
+
+    override fun cleanup() {
+        powerUpdater.accept(PoseVelocity2d(Vector2d(0.0, 0.0), 0.0))
     }
 }

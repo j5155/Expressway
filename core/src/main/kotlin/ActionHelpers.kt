@@ -48,13 +48,19 @@ abstract class InitLoopCondAction protected constructor(val condition: Condition
      * Initializes the action.
      * This will always run before [loop].
      */
-    abstract fun init()
+    open fun init() {}
 
     /**
      * Contents of the action.
      * This will repeat *until* [condition] is true (opposite of a standard Action).
      */
     abstract fun loop(p: TelemetryPacket)
+
+    /**
+     * Method to run once [condition] becomes true.
+     * For example, this can be used to stop motors.
+     */
+    open fun cleanup() {}
 
     private var hasInit = false
     var stop = false
@@ -67,8 +73,15 @@ abstract class InitLoopCondAction protected constructor(val condition: Condition
             init()
             hasInit = true
         }
+
         loop(p)
-        return !stop && !condition()
+
+        return if (condition()) {
+            cleanup()
+            false
+        } else {
+            true
+        }
     }
 }
 
