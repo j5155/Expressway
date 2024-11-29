@@ -57,9 +57,10 @@ abstract class InitLoopCondAction protected constructor(val condition: Condition
     abstract fun loop(p: TelemetryPacket)
 
     private var hasInit = false
+    var stop = false
 
     val isRunning: Boolean
-        get() = condition()
+        get() = !condition()
 
     final override fun run(p: TelemetryPacket): Boolean {
         if (!hasInit) {
@@ -67,7 +68,7 @@ abstract class InitLoopCondAction protected constructor(val condition: Condition
             hasInit = true
         }
         loop(p)
-        return !condition()
+        return !stop && !condition()
     }
 }
 
