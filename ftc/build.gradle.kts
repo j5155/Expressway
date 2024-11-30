@@ -4,6 +4,9 @@ plugins {
     `maven-publish`
 }
 
+apply(plugin = "org.jetbrains.dokka")
+
+
 repositories {
     mavenCentral()
     google()
@@ -77,7 +80,7 @@ afterEvaluate {
             create<MavenPublication>("maven") {
                 groupId = "page.j5155.roadrunner.expressway"
                 artifactId = "ftc"
-                version = "0.1.0"
+                version = "0.1.1"
                 from(components["release"])
             }
         }

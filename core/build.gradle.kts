@@ -3,6 +3,8 @@ plugins {
     `maven-publish`
 }
 
+apply(plugin = "org.jetbrains.dokka")
+
 group = "page.j5155"
 version = "1.0-SNAPSHOT"
 
@@ -52,7 +54,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "page.j5155.roadrunner"
             artifactId = "expressway"
-            version = "0.1.0"
+            version = "0.1.1"
             from(components["java"])
         }
     }

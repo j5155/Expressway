@@ -1,7 +1,10 @@
+import java.util.function.BiFunction
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.withSign
+
+typealias FeedforwardFun = BiFunction<Double, Double?, Double>
 
 /**
  * PID controller with various feedforward components.
@@ -24,12 +27,13 @@ open class PIDFController
     private val kV: Double = 0.0,
     private val kA: Double = 0.0,
     private val kStatic: Double = 0.0,
-    private val kF: FeedforwardFun = FeedforwardFun { x: Double, v: Double? -> 0.0 }
+    private val kF: FeedforwardFun = FeedforwardFun { _, _ -> 0.0 }
 ) {
     constructor(
         pid: PIDCoefficients,
         kF: FeedforwardFun
     ) : this(pid, 0.0, 0.0, 0.0, kF)
+
     /**
      * Target position (that is, the controller setpoint).
      */
@@ -135,7 +139,7 @@ open class PIDFController
 
         val baseOutput =
             pid.kP * error + pid.kI * errorSum + pid.kD * velError + kV * targetVelocity + kA * targetAcceleration +
-                    kF.compute(measuredPosition, measuredVelocity)
+                    kF.apply(measuredPosition, measuredVelocity)
 
         var output = 0.0
         if (abs(baseOutput) > 1e-6) {
@@ -166,9 +170,5 @@ open class PIDFController
         lastUpdateTs = 0
     }
 
-    fun interface FeedforwardFun {
-        fun compute(position: Double, velocity: Double?): Double
-    }
-
-    data class PIDCoefficients(var kP: Double, var kI: Double, var kD: Double) // TODO do these need to be vars?
+    data class PIDCoefficients(var kP: Double, var kI: Double, var kD: Double)
 }
