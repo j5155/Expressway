@@ -4,20 +4,4 @@ This library provides additions to the RoadRunner actions and geometry libraries
 
 ## Installation
 
-Ensure this block is in the "repositories" block of your TeamCode module build.gradle:
-```groovy
-    maven {
-        url = 'https://repo.dairy.foundation/releases'
-    }
-```
-
-Add the following lines to the "dependencies" block of that same build.gradle:
-```groovy
-implementation "page.j5155.roadrunner.actionadditions:core:0.2.0"
-implementation "page.j5155.roadrunner.actionadditions:ftc:0.2.0"
-```
-
-
-## Examples
-
-See the examples folder for usage.
+See instructions in the [documentation](https://exp.zharel.me/installation.html).
