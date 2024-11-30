@@ -1,8 +1,8 @@
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
+import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Vector2d
-import page.j5155.expressway.actions.InitLoopCondAction
 import page.j5155.expressway.geometry.distanceTo
 import page.j5155.expressway.geometry.times
 import java.util.function.Consumer
@@ -17,7 +17,7 @@ class PIDToPoint (
     axialCoefs: PIDFController.PIDCoefficients,
     lateralCoefs: PIDFController.PIDCoefficients,
     headingCoefs: PIDFController.PIDCoefficients,
-) : InitLoopCondAction({ pose.get().position.distanceTo(target.position) < 1 }) {
+) : Action {
 
     private val xController = SquidController(axialCoefs)
     private val yController = SquidController(lateralCoefs)
@@ -31,9 +31,14 @@ class PIDToPoint (
         headingController.setOutputBounds(-PI, PI)
     }
 
-    override fun loop(p: TelemetryPacket) {
+    override fun run(p: TelemetryPacket): Boolean {
         val vel = vel.get()
         val pose = pose.get()
+
+        if (pose.position.distanceTo(target.position) < 1) {
+            powerUpdater.accept(PoseVelocity2d(Vector2d(0.0, 0.0), 0.0))
+            return false
+        }
 
         var inputVector =
             Vector2d(xController.update(pose.position.x), yController.update(pose.position.y))
@@ -43,9 +48,6 @@ class PIDToPoint (
             PoseVelocity2d(inputVector, headingController.update(pose.heading.toDouble()))
 
         powerUpdater.accept(inputVels)
-    }
-
-    override fun cleanup() {
-        powerUpdater.accept(PoseVelocity2d(Vector2d(0.0, 0.0), 0.0))
+        return true
     }
 }
