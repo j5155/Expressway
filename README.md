@@ -13,8 +13,8 @@ Ensure this block is in the "repositories" block of your TeamCode module build.g
 
 Add the following lines to the "dependencies" block of that same build.gradle:
 ```groovy
-implementation "page.j5155.roadrunner:actionadditions:0.1.0"
-implementation "page.j5155.roadrunner.actionadditions:ftc:0.1.0"
+implementation "page.j5155.roadrunner.actionadditions:core:0.2.0"
+implementation "page.j5155.roadrunner.actionadditions:ftc:0.2.0"
 ```
 
 ## Examples

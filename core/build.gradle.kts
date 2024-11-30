@@ -52,9 +52,9 @@ publishing {
     }
     publications {
         create<MavenPublication>("maven") {
-            groupId = "page.j5155.roadrunner"
-            artifactId = "expressway"
-            version = "0.1.1"
+            groupId = "page.j5155.roadrunner.expressway"
+            artifactId = "core"
+            version = "0.2.0"
             from(components["java"])
         }
     }
