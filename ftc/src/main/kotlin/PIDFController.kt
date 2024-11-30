@@ -170,5 +170,6 @@ open class PIDFController
         lastUpdateTs = 0
     }
 
+    // these must be var so that tuning with dash works
     data class PIDCoefficients(var kP: Double, var kI: Double, var kD: Double)
 }
