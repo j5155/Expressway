@@ -43,5 +43,5 @@ jobs:
     - name: Publish to Dairy Snapshots
       run: ./gradlew publishAllPublicationsToDairySnapshotsRepository
       env:
-        SNAPSHOTS_USERNAME: ${{ secrets.SNAPSHOTS_USERNAME  }}
-        SNAPSHOTS_PASSWORD: ${{ secrets.SNAPSHOTS_PASSWORD }}
+        dairySnapshotsUsername: ${{ secrets.SNAPSHOTS_USERNAME  }}
+        dairySnapshotsPassword: ${{ secrets.SNAPSHOTS_PASSWORD }}
