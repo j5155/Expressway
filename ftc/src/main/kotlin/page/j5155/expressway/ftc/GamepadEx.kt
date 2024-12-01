@@ -38,8 +38,8 @@ class GamepadEx(gamepad: Gamepad) {
     }
 
     fun setJoyStickThresholds(threshold: Float) {
-        leftStick.threshold = threshold
-        rightStick.threshold = threshold
+        leftStick.deadzone = threshold
+        rightStick.deadzone = threshold
     }
 
     fun update(): Array<Action> {
@@ -203,33 +203,36 @@ class GamepadEx(gamepad: Gamepad) {
     inner class JoyStick(private val xToWatch: () -> Float, private val yToWatch: () -> Float, private val button: Button):
         Control {
         /**
-         * How far off center the joystick should move before it is considered "down"
+         * How much of the joystick range to round to 0
+         * Compensates for slight inaccuracy and miscentering of joystick
          */
-        var threshold: Float = 0f
+        var deadzone: Float = 0f
 
         /**
-         * Whether the joystick is off of its center position
+         * Whether the joystick is out of the deadzone
          */
         val moved: Boolean
-            get() = abs(x) > threshold || abs(y) > threshold
+            get() = abs(x) > deadzone || abs(y) > deadzone
 
         /**
-         * Whether the joystick just moved off of its center position
+         * Whether the joystick just exited the deadzone
+         * or in other words, was just moved
          */
         var justMoved = false
 
         /**
-         * Whether the joystick just returned to its center position
+         * Whether the joystick just returned to the deadzone
+         * or in other words, was just released
          */
         var justCentered = false
 
         /**
-         * The x-value of the joystick
+         * The current x-value of the joystick
          */
         var x = 0.0f
 
         /**
-         * The y-value of the joystick
+         * The current y-value of the joystick
          */
         var y = 0.0f
 
@@ -256,8 +259,8 @@ class GamepadEx(gamepad: Gamepad) {
 
             button.update()
 
-            justMoved = (abs(xToWatch.invoke()) > threshold || abs(yToWatch.invoke()) > threshold) && !moved
-            justCentered = (abs(xToWatch.invoke()) <= threshold && abs(yToWatch.invoke()) <= threshold) && moved
+            justMoved = (abs(xToWatch.invoke()) > deadzone || abs(yToWatch.invoke()) > deadzone) && !moved
+            justCentered = (abs(xToWatch.invoke()) <= deadzone && abs(yToWatch.invoke()) <= deadzone) && moved
 
             x = xToWatch.invoke()
             y = yToWatch.invoke()
