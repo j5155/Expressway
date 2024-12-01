@@ -81,18 +81,18 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Map an action to the onPress event. It will be run once the button is pressed
          */
-        var onPressActionMap: Action? = null
+        var onPressActionMap: (() -> Action)? = null
 
         /**
          * Map an action to the onRelease event. It will be run once the button is released
          */
-        var onReleaseActionMap: Action? = null
+        var onReleaseActionMap: (() -> Action)? = null
 
         /**
          * This one is a little bit special. It runs the action EVERY TIME the button is pressed (and update gets
          * called).
          */
-        var heldActionMap: Action? = null
+        var heldActionMap: (() -> Action)? = null
 
         /**
          * Updates the various values, and adds mapped actions if applicable
@@ -107,14 +107,14 @@ class GamepadEx(gamepad: Gamepad) {
 
             // If there are mapped actions, request to run them
             if (justPressed && onPressActionMap != null) {
-                actionList += onPressActionMap!!
+                actionList += onPressActionMap!!.invoke()
             }
             if (justReleased && onReleaseActionMap != null) {
-                actionList += onReleaseActionMap!!
+                actionList += onReleaseActionMap!!.invoke()
             }
 
             if (down && heldActionMap != null) {
-                actionList += heldActionMap!!
+                actionList += heldActionMap!!.invoke()
             }
 
             return actionList
@@ -161,18 +161,18 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Map an action to the onPress event. It will be run once the button is pressed
          */
-        var onPressActionMap: Action? = null
+        var onPressActionMap: (() -> Action)? = null
 
         /**
          * Map an action to the onRelease event. It will be run once the button is released
          */
-        var onReleaseActionMap: Action? = null
+        var onReleaseActionMap: (() -> Action)? = null
 
         /**
          * This one is a little bit special. It runs the action EVERY TIME the button is pressed (and update gets
          * called).
          */
-        var heldActionMap: Action? = null
+        var heldActionMap: (() -> Action)? = null
 
         /**
          * Updates the various values, and adds mapped actions if applicable
@@ -185,14 +185,14 @@ class GamepadEx(gamepad: Gamepad) {
 
             // If there are mapped actions, request to run them
             if (justPressed && onPressActionMap != null) {
-                actionList += onPressActionMap!!
+                actionList += onPressActionMap!!.invoke()
             }
             if (justReleased && onReleaseActionMap != null) {
-                actionList += onReleaseActionMap!!
+                actionList += onReleaseActionMap!!.invoke()
             }
 
             if (down && heldActionMap != null) {
-                actionList += heldActionMap!!
+                actionList += heldActionMap!!.invoke()
             }
 
             return actionList
@@ -249,17 +249,17 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Map an action to run when the joystick first moves off center
          */
-        var onMoveActionMap: Action? = null
+        var onMoveActionMap: (() -> Action)? = null
 
         /**
          * Map an action to run when the joystick first moves back to the center position
          */
-        var onCenterActionMap: Action? = null
+        var onCenterActionMap: (() -> Action)? = null
 
         /**
          * Map an action to run whenever the joystick is off of the center position
          */
-        var offCenterActionMap: Action? = null
+        var offCenterActionMap: (() -> Action)? = null
 
         /**
          * Updates the various values, and adds mapped actions if applicable
@@ -277,14 +277,14 @@ class GamepadEx(gamepad: Gamepad) {
 
             // If there are mapped actions, request to run them
             if (justMoved && onMoveActionMap != null) {
-                actionList += onMoveActionMap!!
+                actionList += onMoveActionMap!!.invoke()
             }
             if (justCentered && onCenterActionMap != null) {
-                actionList += onCenterActionMap!!
+                actionList += onCenterActionMap!!.invoke()
             }
 
             if (moved && offCenterActionMap != null) {
-                actionList += offCenterActionMap!!
+                actionList += offCenterActionMap!!.invoke()
             }
 
             return actionList
