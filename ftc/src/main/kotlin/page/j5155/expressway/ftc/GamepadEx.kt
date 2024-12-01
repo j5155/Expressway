@@ -222,7 +222,7 @@ class GamepadEx(gamepad: Gamepad) {
      * @param yToWatch the y value to watch
      * @param button the button to watch
      */
-    inner class JoyStick(private val name: String, private val xToWatch: () -> Float, private val yToWatch: () -> Float, private val button: Button):
+    inner class JoyStick(private val name: String, private val xToWatch: () -> Float, private val yToWatch: () -> Float, val button: Button):
         Control {
         /**
          * How far off center the joystick should move before it is considered "down"
