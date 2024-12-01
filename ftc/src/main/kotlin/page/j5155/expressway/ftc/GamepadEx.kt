@@ -206,7 +206,7 @@ class GamepadEx(gamepad: Gamepad) {
      * @param yToWatch the y value to watch
      * @param button the button to watch
      */
-    inner class JoyStick(private val xToWatch: () -> Float, private val yToWatch: () -> Float, private val button: Button):
+    inner class JoyStick(private val xToWatch: () -> Float, private val yToWatch: () -> Float, val button: Button):
         Control {
         /**
          * How much of the joystick range to round to 0
