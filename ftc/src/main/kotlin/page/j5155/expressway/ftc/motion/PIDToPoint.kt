@@ -13,7 +13,7 @@ import kotlin.math.PI
 
 class PIDToPoint (
     private val pose: Supplier<Pose2d>,
-    private val vel: Supplier<Vector2d>,
+    private val vel: Supplier<PoseVelocity2d>,
     private val target: Pose2d,
     private val powerUpdater: Consumer<PoseVelocity2d>,
     axialCoefs: PIDFController.PIDCoefficients,
@@ -37,7 +37,7 @@ class PIDToPoint (
         val vel = vel.get()
         val pose = pose.get()
 
-        if (pose.position.distanceTo(target.position) < 1) {
+        if (pose.position.distanceTo(target.position) < 1 || vel.linearVel.norm() < 1) {
             powerUpdater.accept(PoseVelocity2d(Vector2d(0.0, 0.0), 0.0))
             return false
         }
