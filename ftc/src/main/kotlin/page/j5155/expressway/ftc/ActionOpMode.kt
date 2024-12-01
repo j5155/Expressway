@@ -1,8 +1,10 @@
+package page.j5155.expressway.ftc
+
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode
+import com.qualcomm.robotcore.eventloop.opmode.OpMode
 
-abstract class ActionLinearOpMode(val runner: ActionRunner = ActionRunner()) : LinearOpMode() {
+abstract class ActionOpMode(val runner: ActionRunner = ActionRunner()) : OpMode() {
     /**
      * Run an action asynchronously.
      * Note: you MUST run updateActions every loop so that the actions queued by runAsync continue.
@@ -10,6 +12,7 @@ abstract class ActionLinearOpMode(val runner: ActionRunner = ActionRunner()) : L
     protected fun runAsync(action: Action) {
         runner.runAsync(action)
     }
+
 
     protected fun updateActions(packet: TelemetryPacket? = null) {
         if (packet == null) {
@@ -20,6 +23,6 @@ abstract class ActionLinearOpMode(val runner: ActionRunner = ActionRunner()) : L
     }
 
 
-    @Deprecated("legacy wrapper", ReplaceWith("runAsync(action)"))
+    @Deprecated("legacy wrapper",ReplaceWith("runAsync(action)"))
     protected fun run(action: Action) = runAsync(action)
 }

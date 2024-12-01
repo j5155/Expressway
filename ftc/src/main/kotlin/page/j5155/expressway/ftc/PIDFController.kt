@@ -1,10 +1,20 @@
+package page.j5155.expressway.ftc
+
 import java.util.function.BiFunction
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
 import kotlin.math.withSign
 
-typealias FeedforwardFun = BiFunction<Double, Double?, Double>
+/**
+ * FeedforwardFun is a functional interface for computing feedforward.
+ * It is essentially an alias for BiFunction<Double, Double?, Double>
+ * that specifies that the first Double argument is position
+ * and the second Double? argument is velocity.
+ */
+fun interface FeedforwardFun : BiFunction<Double, Double?, Double> {
+    override fun apply(position: Double, velocity: Double?): Double
+}
 
 /**
  * PID controller with various feedforward components.

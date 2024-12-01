@@ -1,3 +1,5 @@
+package page.j5155.expressway.ftc
+
 import kotlin.math.abs
 import kotlin.math.sign
 import kotlin.math.sqrt
