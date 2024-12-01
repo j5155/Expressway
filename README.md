@@ -2,6 +2,11 @@
 
 This library provides additions to the RoadRunner actions and geometry libraries as well as an ActionRunner system for OpMode usage, and helpers for SDK conversions.
 
+## Docs
+
+Docs are here: https://exp.zharel.me/introduction.html
+Discord is here: https://discord.gg/ehtyVfcdMv
+
 ## Installation
 
 Ensure this block is in the "repositories" block of your TeamCode module build.gradle:

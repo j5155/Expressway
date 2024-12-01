@@ -15,7 +15,7 @@ repositories {
 
 dependencies {
     compileOnly("com.android.support:appcompat-v7:28.0.0")
-    implementation(project(":core"))
+    compileOnly(project(":core"))
 
     compileOnly("org.firstinspires.ftc:RobotCore:10.1.1")
     compileOnly("org.firstinspires.ftc:Hardware:10.1.1")
@@ -80,7 +80,7 @@ afterEvaluate {
             create<MavenPublication>("maven") {
                 groupId = "page.j5155.roadrunner.expressway"
                 artifactId = "ftc"
-                version = "0.2.0"
+                version = "0.2.1-SNAPSHOT"
                 from(components["release"])
             }
         }
