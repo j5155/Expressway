@@ -1,5 +1,5 @@
 @file:JvmName("ActionHelpers")
-package page.j5155.expressway.actions
+package page.j5155.expressway.core.actions
 
 import com.acmerobotics.dashboard.canvas.Canvas
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
@@ -22,14 +22,14 @@ abstract class InitLoopAction : Action {
      * Contents of the action.
      * @return whether to continue with the action; true to continue looping, false to end (like a standard Action)
      */
-    abstract fun loop(t: TelemetryPacket): Boolean
+    abstract fun loop(p: TelemetryPacket): Boolean
 
-    final override fun run(t: TelemetryPacket): Boolean { // final to prevent downstream classes from overriding it
+    final override fun run(p: TelemetryPacket): Boolean { // final to prevent downstream classes from overriding it
         if (!initialized) {
             init()
             initialized = true
         }
-        return loop(t)
+        return loop(p)
     }
     // intentionally not overriding preview
 }

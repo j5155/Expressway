@@ -1,12 +1,12 @@
-package page.j5155.expressway.ftc
+package page.j5155.expressway.ftc.motion
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.PoseVelocity2d
 import com.acmerobotics.roadrunner.Vector2d
-import page.j5155.expressway.geometry.distanceTo
-import page.j5155.expressway.geometry.times
+import page.j5155.expressway.core.geometry.distanceTo
+import page.j5155.expressway.core.geometry.times
 import java.util.function.Consumer
 import java.util.function.Supplier
 import kotlin.math.PI

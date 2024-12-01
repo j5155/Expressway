@@ -1,9 +1,7 @@
-package page.j5155.expressway.ftc
+package page.j5155.expressway.ftc.actions
 
-import com.acmerobotics.dashboard.FtcDashboard
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
-import com.qualcomm.robotcore.util.RobotLog.a
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract
 
@@ -23,17 +21,17 @@ class UniqueActionRunner: ActionRunner() {
         oldActions.forEach { this.runAsync(it) }
     }
 
-    override fun runAsync(a: Action) {
-        if (duplicated(a)) {
-            uniqueActionsQueue.add(a)
+    override fun runAsync(action: Action) {
+        if (duplicated(action)) {
+            uniqueActionsQueue.add(action)
         } else {
-            super.runAsync(a)
+            super.runAsync(action)
         }
     }
 
-    fun runNoQueue(a: Action) {
-        if (!duplicated(a)) {
-            runningActions.add(a)
+    fun runNoQueue(action: Action) {
+        if (!duplicated(action)) {
+            runningActions.add(action)
         }
     }
 

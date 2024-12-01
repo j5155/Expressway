@@ -1,4 +1,4 @@
-package page.j5155.expressway.ftc
+package page.j5155.expressway.ftc.motion
 
 import kotlin.math.abs
 import kotlin.math.sign
@@ -26,8 +26,8 @@ class SquidController: PIDFController {
     ) : super(pid,kV,kA,kStatic,kF)
 
     constructor(
-            pid: PIDCoefficients,
-            kF: FeedforwardFun
+        pid: PIDCoefficients,
+        kF: FeedforwardFun
     ) : this(pid, 0.0, 0.0, 0.0, kF)
 
     override fun update(

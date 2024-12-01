@@ -54,7 +54,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "page.j5155.roadrunner.expressway"
             artifactId = "core"
-            version = "0.3.0"
+            version = "0.3.1"
             from(components["java"])
         }
     }

@@ -1,8 +1,8 @@
 import com.acmerobotics.roadrunner.Pose2d
 import com.acmerobotics.roadrunner.Vector2d
-import page.j5155.expressway.geometry.approxEqual
-import page.j5155.expressway.geometry.distanceTo
-import page.j5155.expressway.geometry.rotateBy
+import page.j5155.expressway.core.geometry.approxEqual
+import page.j5155.expressway.core.geometry.distanceTo
+import page.j5155.expressway.core.geometry.rotateBy
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

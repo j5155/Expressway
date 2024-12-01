@@ -1,4 +1,4 @@
-package page.j5155.expressway.actions
+package page.j5155.expressway.core.actions
 
 import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action

@@ -1,4 +1,4 @@
-package page.j5155.expressway.ftc
+package page.j5155.expressway.ftc.motion
 
 import java.util.function.BiFunction
 import kotlin.math.abs

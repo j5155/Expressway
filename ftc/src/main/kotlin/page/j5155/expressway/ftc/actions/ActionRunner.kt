@@ -1,7 +1,7 @@
-package page.j5155.expressway.ftc
+package page.j5155.expressway.ftc.actions
 
 import com.acmerobotics.dashboard.FtcDashboard
-import page.j5155.expressway.actions.NoPreviewActionRunner
+import page.j5155.expressway.core.actions.NoPreviewActionRunner
 
 // should this exist? should this wrapping happen only in OpModes?
 /**
