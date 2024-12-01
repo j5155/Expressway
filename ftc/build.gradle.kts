@@ -23,12 +23,13 @@ dependencies {
     implementation("com.acmerobotics.dashboard:dashboard:0.4.16") {
         exclude(group="org.firstinspires.ftc")
     }
+
     implementation("com.acmerobotics.roadrunner:actions:1.0.0")
 }
 
 
 android {
-    namespace = "page.j5155.roadrunner.actionadditions"
+    namespace = "page.j5155.roadrunner.expressway.ftc"
     compileSdk = 34
 
     defaultConfig {
@@ -80,7 +81,7 @@ afterEvaluate {
             create<MavenPublication>("maven") {
                 groupId = "page.j5155.roadrunner.expressway"
                 artifactId = "ftc"
-                version = "0.2.1-SNAPSHOT"
+                version = "0.3.0"
                 from(components["release"])
             }
         }
