@@ -1,5 +1,11 @@
 import java.io.ByteArrayOutputStream
 
+val snapshotsUsername: String = System.getenv("SNAPSHOTS_USERNAME")
+val snapshotsPassword: String = System.getenv("SNAPSHOTS_PASSWORD")
+
+val releasesUsername: String = System.getenv("RELEASES_USERNAME")
+val releasesPassword: String = System.getenv("RELEASES_PASSWORD")
+
 /* Gets the version name from the latest Git tag */
 fun getVersionName(): String {
     val stdout = ByteArrayOutputStream()
@@ -47,17 +53,17 @@ publishing {
         maven {
             name = "dairyReleases"
             url = uri("https://repo.dairy.foundation/releases")
-            credentials(PasswordCredentials::class)
-            authentication {
-                create<BasicAuthentication>("basic")
+            credentials {
+                username = releasesUsername
+                password = releasesPassword
             }
         }
         maven {
             name = "dairySnapshots"
             url = uri("https://repo.dairy.foundation/snapshots")
-            credentials(PasswordCredentials::class)
-            authentication {
-                create<BasicAuthentication>("basic")
+            credentials {
+                username = snapshotsUsername
+                password = snapshotsPassword
             }
         }
     }
