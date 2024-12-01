@@ -1,4 +1,3 @@
-import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.hardware.Gamepad
 import kotlin.math.abs
@@ -9,9 +8,6 @@ import kotlin.math.abs
  * @param gamepad the Qualcomm gamepad to observe. It should be `gamepad1` or `gamepad2`, unless you're doing something funky.
  */
 class GamepadEx(gamepad: Gamepad) {
-
-    private var runningActions: List<Action> = mutableListOf()
-
     val a = Button("A") { gamepad.a }
     val b = Button("B") { gamepad.b }
     val x = Button("X") { gamepad.x }
@@ -34,8 +30,6 @@ class GamepadEx(gamepad: Gamepad) {
     val controls = listOf(a, b, x, y, dpadUp, dpadDown, dpadLeft, dpadRight, leftBumper, rightBumper,
         leftTrigger, rightTrigger, leftStick, rightStick)
 
-    val updateAction = UpdateGamepadAction()
-
     fun setTriggerThresholds(threshold: Float) {
         leftTrigger.threshold = threshold
         rightTrigger.threshold = threshold
@@ -46,30 +40,15 @@ class GamepadEx(gamepad: Gamepad) {
         rightStick.threshold = threshold
     }
 
-    /**
-     * In order to map actions to gamepad buttons, this Action must be added. It handles updating the controls, and runs
-     * the actions as needed. This class should not be directly instantiated by the user, instead use the `updateAction`
-     * variable to reference the already-created instance of this class.
-     */
-    inner class UpdateGamepadAction: Action {
-        override fun run(p: TelemetryPacket): Boolean {
-            controls.forEach {
-                it.update()
-            }
+    fun update(): Array<Action> {
+        val actionsArray = mutableListOf<Action>()
 
-            val newRunningActionList = mutableListOf<Action>()
-            runningActions.forEach { action ->
-                action.preview(p.fieldOverlay())
-                if (action.run(p)) {
-                    newRunningActionList.add(action)
-                }
-            }
-            runningActions = newRunningActionList
-
-            return true
+        controls.forEach {
+            actionsArray.addAll(it.update())
         }
-    }
 
+        return actionsArray.toTypedArray()
+    }
 
     /**
      * Wrapper for an individual button on a gamepad.
@@ -112,25 +91,27 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Updates the various values, and adds mapped actions if applicable
          */
-        override fun update() {
+        override fun update(): List<Action> {
+
+            val actionList = mutableListOf<Action>()
+
             justPressed = controlToWatch.invoke() && !down
             justReleased = !controlToWatch.invoke() && down
             down = controlToWatch.invoke()
 
             // If there are mapped actions, request to run them
             if (justPressed && onPressActionMap != null) {
-                runningActions += onPressActionMap!!
+                actionList += onPressActionMap!!
             }
             if (justReleased && onReleaseActionMap != null) {
-                runningActions += onReleaseActionMap!!
+                actionList += onReleaseActionMap!!
             }
 
             if (down && heldActionMap != null) {
-                // We only want to add one instance of the heldAction at a time.
-                if (!runningActions.contains(heldActionMap!!)) {
-                    runningActions += heldActionMap!!
-                }
+                actionList += heldActionMap!!
             }
+
+            return actionList
         }
 
         override fun toString(): String {
@@ -194,25 +175,25 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Updates the various values, and adds mapped actions if applicable
          */
-        override fun update() {
+        override fun update(): List<Action> {
+            val actionList = mutableListOf<Action>()
             justPressed = controlToWatch.invoke() > threshold && !down
             justReleased = controlToWatch.invoke() <= threshold && down
             amount = controlToWatch.invoke()
 
             // If there are mapped actions, request to run them
             if (justPressed && onPressActionMap != null) {
-                runningActions += onPressActionMap!!
+                actionList += onPressActionMap!!
             }
             if (justReleased && onReleaseActionMap != null) {
-                runningActions += onReleaseActionMap!!
+                actionList += onReleaseActionMap!!
             }
 
             if (down && heldActionMap != null) {
-                // We only want to add one instance of the heldAction at a time.
-                if (!runningActions.contains(heldActionMap!!)) {
-                    runningActions += heldActionMap!!
-                }
+                actionList += heldActionMap!!
             }
+
+            return actionList
         }
 
         /**
@@ -287,7 +268,9 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Updates the various values, and adds mapped actions if applicable
          */
-        override fun update() {
+        override fun update(): List<Action> {
+            val actionList = mutableListOf<Action>()
+
             button.update()
 
             justMoved = (abs(xToWatch.invoke()) > threshold || abs(yToWatch.invoke()) > threshold) && !moved
@@ -298,18 +281,17 @@ class GamepadEx(gamepad: Gamepad) {
 
             // If there are mapped actions, request to run them
             if (justMoved && onMoveActionMap != null) {
-                runningActions += onMoveActionMap!!
+                actionList += onMoveActionMap!!
             }
             if (justCentered && onCenterActionMap != null) {
-                runningActions += onCenterActionMap!!
+                actionList += onCenterActionMap!!
             }
 
             if (moved && offCenterActionMap != null) {
-                // We only want to add one instance of the heldAction at a time.
-                if (!runningActions.contains(offCenterActionMap!!)) {
-                    runningActions += offCenterActionMap!!
-                }
+                actionList += offCenterActionMap!!
             }
+
+            return actionList
         }
 
         /**
@@ -337,7 +319,7 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Updates the various values, and adds mapped actions if applicable
          */
-        fun update()
+        fun update(): List<Action>
     }
 
 }
