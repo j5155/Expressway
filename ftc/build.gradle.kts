@@ -1,11 +1,5 @@
 import java.io.ByteArrayOutputStream
 
-val snapshotsUsername: String = System.getenv("SNAPSHOTS_USERNAME")
-val snapshotsPassword: String = System.getenv("SNAPSHOTS_PASSWORD")
-
-val releasesUsername: String = System.getenv("RELEASES_USERNAME")
-val releasesPassword: String = System.getenv("RELEASES_PASSWORD")
-
 /* Gets the version name from the latest Git tag */
 fun getVersionName(): String {
     val stdout = ByteArrayOutputStream()
@@ -81,17 +75,17 @@ afterEvaluate {
             maven {
                 name = "dairyReleases"
                 url = uri("https://repo.dairy.foundation/releases")
-                credentials {
-                    username = releasesUsername
-                    password = releasesPassword
+                credentials(PasswordCredentials::class)
+                authentication {
+                    create<BasicAuthentication>("basic")
                 }
             }
             maven {
                 name = "dairySnapshots"
                 url = uri("https://repo.dairy.foundation/snapshots")
-                credentials {
-                    username = snapshotsUsername
-                    password = snapshotsPassword
+                credentials(PasswordCredentials::class)
+                authentication {
+                    create<BasicAuthentication>("basic")
                 }
             }
         }
