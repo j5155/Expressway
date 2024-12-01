@@ -10,24 +10,24 @@ import kotlin.math.abs
  * @param gamepad the Qualcomm gamepad to observe. It should be `gamepad1` or `gamepad2`, unless you're doing something funky.
  */
 class GamepadEx(gamepad: Gamepad) {
-    val a = Button("A") { gamepad.a }
-    val b = Button("B") { gamepad.b }
-    val x = Button("X") { gamepad.x }
-    val y = Button("Y") { gamepad.y }
+    val a = Button { gamepad.a }
+    val b = Button { gamepad.b }
+    val x = Button { gamepad.x }
+    val y = Button { gamepad.y }
 
-    val dpadUp = Button("DPad Up") { gamepad.dpad_up }
-    val dpadDown = Button("DPad Down") { gamepad.dpad_down }
-    val dpadLeft = Button("DPad Left") { gamepad.dpad_left }
-    val dpadRight = Button("DPad Right") { gamepad.dpad_right }
+    val dpadUp = Button { gamepad.dpad_up }
+    val dpadDown = Button { gamepad.dpad_down }
+    val dpadLeft = Button { gamepad.dpad_left }
+    val dpadRight = Button { gamepad.dpad_right }
 
-    val leftBumper = Button("Left Bumper") { gamepad.left_bumper }
-    val rightBumper = Button("Right Bumper") { gamepad.right_bumper }
+    val leftBumper = Button { gamepad.left_bumper }
+    val rightBumper = Button { gamepad.right_bumper }
 
-    val leftTrigger = Trigger("Left Trigger") { gamepad.left_trigger }
-    val rightTrigger = Trigger("Right Trigger") { gamepad.right_trigger }
+    val leftTrigger = Trigger { gamepad.left_trigger }
+    val rightTrigger = Trigger { gamepad.right_trigger }
 
-    val leftStick = JoyStick("Left Stick", { gamepad.left_stick_x }, { gamepad.left_stick_y }, Button("Left Stick Button") { gamepad.left_stick_button })
-    val rightStick = JoyStick("Right Stick", { gamepad.right_stick_x }, { gamepad.right_stick_y }, Button("Right Stick Button") { gamepad.right_stick_button })
+    val leftStick = JoyStick ({ gamepad.left_stick_x }, { gamepad.left_stick_y }, Button { gamepad.left_stick_button })
+    val rightStick = JoyStick ({ gamepad.right_stick_x }, { gamepad.right_stick_y }, Button { gamepad.right_stick_button })
 
     val controls = listOf(a, b, x, y, dpadUp, dpadDown, dpadLeft, dpadRight, leftBumper, rightBumper,
         leftTrigger, rightTrigger, leftStick, rightStick)
@@ -38,8 +38,8 @@ class GamepadEx(gamepad: Gamepad) {
     }
 
     fun setJoyStickThresholds(threshold: Float) {
-        leftStick.threshold = threshold
-        rightStick.threshold = threshold
+        leftStick.deadzone = threshold
+        rightStick.deadzone = threshold
     }
 
     fun update(): Array<Action> {
@@ -58,21 +58,24 @@ class GamepadEx(gamepad: Gamepad) {
      * @param controlToWatch a lambda for the control to watch. This will be re-invoked every time update is called, so
      *          that it will automatically match the gamepad's value
      */
-    inner class Button(private val name: String = "Unknown Button", private val controlToWatch: () -> Boolean):
+    inner class Button(private val controlToWatch: () -> Boolean):
         Control {
         /**
          * Whether this button is currently pushed down
          */
+        @JvmField
         var down = false
 
         /**
          * Whether this button was pressed between the last call to update and this one
          */
+        @JvmField
         var justPressed = false
 
         /**
          * Whether this button was released between the last call to update and this one
          */
+        @JvmField
         var justReleased = false
 
         /**
@@ -116,14 +119,6 @@ class GamepadEx(gamepad: Gamepad) {
 
             return actionList
         }
-
-        override fun toString(): String {
-            val set = mutableSetOf<String>()
-            if (down) set.add("Down")
-            if (justPressed) set.add("Just Pressed")
-            if (justReleased) set.add("Just Released")
-            return if (set.isNotEmpty()) "$name: ${set.joinToString(", ")}" else ""
-        }
     }
 
     /**
@@ -132,7 +127,7 @@ class GamepadEx(gamepad: Gamepad) {
      * @param controlToWatch a lambda for the control to watch. This will be re-invoked every time update is called, so
      *          that it will automatically match the gamepad's value
      */
-    inner class Trigger(private val name: String = "Unknown Trigger", private val controlToWatch: () -> Float):
+    inner class Trigger(private val controlToWatch: () -> Float):
         Control {
         /**
          * How far off of default the trigger should move before it is considered "down"
@@ -148,16 +143,19 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Whether this button was pressed between the last call to update and this one
          */
+        @JvmField
         var justPressed = false
 
         /**
          * Whether this button was released between the last call to update and this one
          */
+        @JvmField
         var justReleased = false
 
         /**
          * The amount the trigger is pressed down
          */
+        @JvmField
         var amount = 0f
 
         /**
@@ -199,20 +197,6 @@ class GamepadEx(gamepad: Gamepad) {
 
             return actionList
         }
-
-        /**
-         * Returns a string showing whether the trigger was just pressed, was just released, and/or
-         * how much it's being pressed down.
-         * @return whether the trigger was just pressed, was just released, and/or how much it's
-         * being pressed down.
-         */
-        override fun toString(): String {
-            val set = mutableSetOf<String>()
-            if (justPressed) set.add("Just Pressed")
-            if (justReleased) set.add("Just Released")
-            if (amount != 0.0f) set.add("Amount Pressed: $amount")
-            return if (set.isNotEmpty()) "$name: ${set.joinToString(", ")}" else ""
-        }
     }
 
     /**
@@ -222,37 +206,44 @@ class GamepadEx(gamepad: Gamepad) {
      * @param yToWatch the y value to watch
      * @param button the button to watch
      */
-    inner class JoyStick(private val name: String, private val xToWatch: () -> Float, private val yToWatch: () -> Float, val button: Button):
+    inner class JoyStick(private val xToWatch: () -> Float, private val yToWatch: () -> Float, val button: Button):
         Control {
         /**
-         * How far off center the joystick should move before it is considered "down"
+         * How much of the joystick range to round to 0
+         * Compensates for slight inaccuracy and miscentering of joystick
          */
-        var threshold: Float = 0f
+        var deadzone: Float = 0f
 
         /**
-         * Whether the joystick is off of its center position
+         * Whether the joystick is out of the deadzone
          */
         val moved: Boolean
-            get() = abs(x) > threshold || abs(y) > threshold
+            get() = abs(x) > deadzone || abs(y) > deadzone
 
         /**
-         * Whether the joystick just moved off of its center position
+         * Whether the joystick just exited the deadzone
+         * or in other words, was just moved
          */
+        @JvmField
         var justMoved = false
 
         /**
-         * Whether the joystick just returned to its center position
+         * Whether the joystick just returned to the deadzone
+         * or in other words, was just released
          */
+        @JvmField
         var justCentered = false
 
         /**
-         * The x-value of the joystick
+         * The current x-value of the joystick
          */
+        @JvmField
         var x = 0.0f
 
         /**
-         * The y-value of the joystick
+         * The current y-value of the joystick
          */
+        @JvmField
         var y = 0.0f
 
         /**
@@ -278,8 +269,8 @@ class GamepadEx(gamepad: Gamepad) {
 
             button.update()
 
-            justMoved = (abs(xToWatch.invoke()) > threshold || abs(yToWatch.invoke()) > threshold) && !moved
-            justCentered = (abs(xToWatch.invoke()) <= threshold && abs(yToWatch.invoke()) <= threshold) && moved
+            justMoved = (abs(xToWatch.invoke()) > deadzone || abs(yToWatch.invoke()) > deadzone) && !moved
+            justCentered = (abs(xToWatch.invoke()) <= deadzone && abs(yToWatch.invoke()) <= deadzone) && moved
 
             x = xToWatch.invoke()
             y = yToWatch.invoke()
@@ -297,26 +288,6 @@ class GamepadEx(gamepad: Gamepad) {
             }
 
             return actionList
-        }
-
-        /**
-         * Returns a string showing whether the button was just pressed, was just released, and/or
-         * how much it's being pressed down, as well as whether the joystick just started or
-         * stopped moving, and its x and y coordinates (if they aren't 0).
-         * @return information about the joystick's current state
-         */
-        override fun toString(): String {
-            val set = mutableSetOf<String>()
-            if (button.down) set.add("Button Down")
-            if (button.justPressed) set.add("Button Just Pressed")
-            if (button.justReleased) set.add("Button Just Released")
-            if (justMoved) set.add("Just Moved Off-Center")
-            if (justCentered) set.add("Just Moved Back to Center")
-            if (set.isNotEmpty() || x != 0.0f || y != 0.0f) {
-                set.add("X: $x")
-                set.add("Y: $y")
-            }
-            return if (set.isNotEmpty()) "$name: ${set.joinToString(", ")}" else ""
         }
     }
 
