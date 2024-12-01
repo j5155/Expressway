@@ -1,3 +1,5 @@
+package page.j5155.expressway.ftc
+
 import com.qualcomm.robotcore.hardware.Gamepad
 
 /**
@@ -5,12 +7,12 @@ import com.qualcomm.robotcore.hardware.Gamepad
  */
 class GamepadActionRunner(qualcommGamepad1: Gamepad, qualcommGamepad2: Gamepad): UniqueActionRunner() {
     /**
-     * A GamepadEx reference used for mapping actions to buttons/joysticks/triggers
+     * A page.j5155.expressway.ftc.GamepadEx reference used for mapping actions to buttons/joysticks/triggers
      */
     val gamepad1 = GamepadEx(qualcommGamepad1)
 
     /**
-     * A GamepadEx reference used for mapping actions to buttons/joysticks/triggers
+     * A page.j5155.expressway.ftc.GamepadEx reference used for mapping actions to buttons/joysticks/triggers
      */
     val gamepad2 = GamepadEx(qualcommGamepad2)
 

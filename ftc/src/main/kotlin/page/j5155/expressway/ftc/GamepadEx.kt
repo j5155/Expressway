@@ -1,3 +1,5 @@
+package page.j5155.expressway.ftc
+
 import com.acmerobotics.roadrunner.Action
 import com.qualcomm.robotcore.hardware.Gamepad
 import kotlin.math.abs
@@ -56,7 +58,8 @@ class GamepadEx(gamepad: Gamepad) {
      * @param controlToWatch a lambda for the control to watch. This will be re-invoked every time update is called, so
      *          that it will automatically match the gamepad's value
      */
-    inner class Button(private val name: String = "Unknown Button", private val controlToWatch: () -> Boolean): Control {
+    inner class Button(private val name: String = "Unknown Button", private val controlToWatch: () -> Boolean):
+        Control {
         /**
          * Whether this button is currently pushed down
          */
@@ -129,7 +132,8 @@ class GamepadEx(gamepad: Gamepad) {
      * @param controlToWatch a lambda for the control to watch. This will be re-invoked every time update is called, so
      *          that it will automatically match the gamepad's value
      */
-    inner class Trigger(private val name: String = "Unknown Trigger", private val controlToWatch: () -> Float): Control {
+    inner class Trigger(private val name: String = "Unknown Trigger", private val controlToWatch: () -> Float):
+        Control {
         /**
          * How far off of default the trigger should move before it is considered "down"
          */
@@ -218,7 +222,8 @@ class GamepadEx(gamepad: Gamepad) {
      * @param yToWatch the y value to watch
      * @param button the button to watch
      */
-    inner class JoyStick(private val name: String, private val xToWatch: () -> Float, private val yToWatch: () -> Float, private val button: Button): Control {
+    inner class JoyStick(private val name: String, private val xToWatch: () -> Float, private val yToWatch: () -> Float, private val button: Button):
+        Control {
         /**
          * How far off center the joystick should move before it is considered "down"
          */
