@@ -1,3 +1,14 @@
+import java.io.ByteArrayOutputStream
+
+/* Gets the version name from the latest Git tag */
+fun getVersionName(): String {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine("git", "describe", "--tags", "--always")
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
 plugins {
     kotlin("jvm") version "2.0.20"
     `maven-publish`
@@ -54,7 +65,7 @@ publishing {
         create<MavenPublication>("maven") {
             groupId = "page.j5155.roadrunner.expressway"
             artifactId = "core"
-            version = "0.3.1"
+            version = getVersionName()
             from(components["java"])
         }
     }

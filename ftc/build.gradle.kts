@@ -1,3 +1,15 @@
+import java.io.ByteArrayOutputStream
+
+/* Gets the version name from the latest Git tag */
+fun getVersionName(): String {
+    val stdout = ByteArrayOutputStream()
+    exec {
+        commandLine("git", "describe", "--tags", "--always")
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
 plugins {
     id("com.android.library")
     id("org.jetbrains.kotlin.android")
@@ -81,9 +93,11 @@ afterEvaluate {
             create<MavenPublication>("maven") {
                 groupId = "page.j5155.roadrunner.expressway"
                 artifactId = "ftc"
-                version = "0.3.2"
+                version = getVersionName()
                 from(components["release"])
             }
         }
     }
 }
+
+
