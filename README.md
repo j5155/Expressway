@@ -1,10 +1,11 @@
 # Welcome to Expressway!
 
-This library provides additions to the RoadRunner actions and geometry libraries as well as an ActionRunner system for OpMode usage, and helpers for SDK conversions.
+This library provides additions to the RoadRunner actions and geometry libraries, an ActionRunner system for OpMode usage, and helpers for SDK conversions.
 
-## Docs
+## Docs and Talks
 
 Docs are here: https://exp.zharel.me/introduction.html
+
 Discord is here: https://discord.gg/ehtyVfcdMv
 
 ## Installation
