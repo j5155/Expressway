@@ -63,16 +63,19 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Whether this button is currently pushed down
          */
+        @JvmField
         var down = false
 
         /**
          * Whether this button was pressed between the last call to update and this one
          */
+        @JvmField
         var justPressed = false
 
         /**
          * Whether this button was released between the last call to update and this one
          */
+        @JvmField
         var justReleased = false
 
         /**
@@ -140,16 +143,19 @@ class GamepadEx(gamepad: Gamepad) {
         /**
          * Whether this button was pressed between the last call to update and this one
          */
+        @JvmField
         var justPressed = false
 
         /**
          * Whether this button was released between the last call to update and this one
          */
+        @JvmField
         var justReleased = false
 
         /**
          * The amount the trigger is pressed down
          */
+        @JvmField
         var amount = 0f
 
         /**
@@ -218,22 +224,26 @@ class GamepadEx(gamepad: Gamepad) {
          * Whether the joystick just exited the deadzone
          * or in other words, was just moved
          */
+        @JvmField
         var justMoved = false
 
         /**
          * Whether the joystick just returned to the deadzone
          * or in other words, was just released
          */
+        @JvmField
         var justCentered = false
 
         /**
          * The current x-value of the joystick
          */
+        @JvmField
         var x = 0.0f
 
         /**
          * The current y-value of the joystick
          */
+        @JvmField
         var y = 0.0f
 
         /**
