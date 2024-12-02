@@ -123,7 +123,7 @@ open class PIDFController
      */
     @JvmOverloads
     open fun update(
-        timestamp: Long = System.nanoTime(),
+        timestamp: Long,
         measuredPosition: Double,
         measuredVelocity: Double? = null
     ): Double {
