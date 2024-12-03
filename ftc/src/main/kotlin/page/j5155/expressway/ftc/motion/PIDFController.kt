@@ -1,6 +1,5 @@
 package page.j5155.expressway.ftc.motion
 
-import java.util.function.BiFunction
 import kotlin.math.abs
 import kotlin.math.max
 import kotlin.math.min
@@ -12,8 +11,8 @@ import kotlin.math.withSign
  * that specifies that the first Double argument is position
  * and the second Double? argument is velocity.
  */
-fun interface FeedforwardFun : BiFunction<Double, Double?, Double> {
-    override fun apply(position: Double, velocity: Double?): Double
+fun interface FeedforwardFun {
+    fun compute(position: Double, velocity: Double?): Double
 }
 
 /**
@@ -33,10 +32,10 @@ open class PIDFController
  * @param kStatic additive feedforward constant
  * @param kF      custom feedforward that depends on position and velocity
  */ @JvmOverloads constructor(
-    private val pid: PIDCoefficients,
-    private val kV: Double = 0.0,
-    private val kA: Double = 0.0,
-    private val kStatic: Double = 0.0,
+    private var pid: PIDCoefficients,
+    private var kV: Double = 0.0,
+    private var kA: Double = 0.0,
+    private var kStatic: Double = 0.0,
     private val kF: FeedforwardFun = FeedforwardFun { _, _ -> 0.0 }
 ) {
     constructor(
@@ -149,7 +148,7 @@ open class PIDFController
 
         val baseOutput =
             pid.kP * error + pid.kI * errorSum + pid.kD * velError + kV * targetVelocity + kA * targetAcceleration +
-                    kF.apply(measuredPosition, measuredVelocity)
+                    kF.compute(measuredPosition, measuredVelocity)
 
         var output = 0.0
         if (abs(baseOutput) > 1e-6) {
