@@ -59,7 +59,7 @@ open class PIDFController
     var targetAcceleration: Double = 0.0
 
     /**
-     * Error computed in the last call to [.update]
+     * Error computed in the last call to [update]
      */
     var lastError: Double = 0.0
     private var errorSum = 0.0
@@ -162,7 +162,7 @@ open class PIDFController
         return output
     }
 
-    fun update(
+    open fun update(
         measuredPosition: Double
     ): Double {
         return update(System.nanoTime(),measuredPosition)

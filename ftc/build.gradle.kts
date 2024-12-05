@@ -93,7 +93,7 @@ afterEvaluate {
             create<MavenPublication>("maven") {
                 groupId = "page.j5155.roadrunner.expressway"
                 artifactId = "ftc"
-                version = getVersionName()
+                version = "0.3.7"
                 from(components["release"])
             }
         }
