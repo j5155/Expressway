@@ -35,7 +35,7 @@ class SquidController: PIDFController {
         measuredPosition: Double,
         measuredVelocity: Double?
     ): Double {
-        val result = update(timestamp, measuredPosition, measuredVelocity)
+        val result = super.update(timestamp, measuredPosition, measuredVelocity)
 
         return sqrt(abs(result)) * sign(result)
     }
