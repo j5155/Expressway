@@ -5,14 +5,13 @@ import com.acmerobotics.roadrunner.Action
 import java.util.function.Supplier
 
 fun interface Condition : Supplier<Boolean>
-abstract class InitLoopCondAction(condition: Condition) : ActionEx(condition)
 
 /**
  * Allows for the creation of an Action using init and loop methods and a boolean-returning continuity condition.
  * Like InitLoopAction, but with the continuity condition seperated out
  * @param condition continues the action while the condition is true; false to stop
  */
-abstract class ActionEx protected constructor(val condition: Condition) : Action {
+abstract class InitLoopCondAction protected constructor(val condition: Condition) : Action, Interruptible {
     /**
      * Initializes the action.
      * This will always run before [loop].
@@ -54,5 +53,11 @@ abstract class ActionEx protected constructor(val condition: Condition) : Action
     }
 
     private operator fun Condition.invoke() = this.get()
+
+    override fun onInterrupt() = cleanup()
 }
 
+abstract class ActionEx(condition: Condition, dependencies: List<Dependency>) : InitLoopCondAction(condition),
+    Dependent {
+        override val dependencies = dependencies.toMutableList()
+    }
