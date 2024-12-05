@@ -48,4 +48,6 @@ bin/
 
 
 /local.properties
+/gradle.properties
 gradle.properties
+
