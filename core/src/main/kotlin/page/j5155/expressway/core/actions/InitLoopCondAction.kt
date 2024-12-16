@@ -4,13 +4,25 @@ import com.acmerobotics.dashboard.telemetry.TelemetryPacket
 import com.acmerobotics.roadrunner.Action
 import java.util.function.Supplier
 
+/**
+ * Function interface for a condition that returns a boolean.
+ * @return true to continue; false to stop
+ */
+fun interface Condition : Supplier<Boolean>
+
+/**
+ * Calls the condition function and returns the result.
+ * Equivalent to calling [Condition.get].
+ * @return true to continue; false to stop
+ */
+operator fun Condition.invoke() = get()
 
 /**
  * Allows for the creation of an Action using init and loop methods and a boolean-returning continuity condition.
  * Like InitLoopAction, but with the continuity condition seperated out
  * @param condition continues the action while the condition is true; false to stop
  */
-abstract class InitLoopCondAction protected constructor(val condition: Supplier<Boolean>) : Action {
+abstract class InitLoopCondAction protected constructor(val condition: Condition) : Action {
     /**
      * Initializes the action.
      * This will always run before [loop].
@@ -33,7 +45,7 @@ abstract class InitLoopCondAction protected constructor(val condition: Supplier<
     var stop = false
 
     val isRunning: Boolean
-        get() = condition.get()
+        get() = condition()
 
     final override fun run(p: TelemetryPacket): Boolean {
         if (!hasInit) {
@@ -43,7 +55,7 @@ abstract class InitLoopCondAction protected constructor(val condition: Supplier<
 
         loop(p)
 
-        return if (condition.get()) {
+        return if (condition()) {
             true
         } else {
             cleanup()
